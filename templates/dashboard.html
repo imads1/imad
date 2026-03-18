@@ -1,0 +1,2345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOUPIX Panel - {{ username }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --bg-primary: #050505;
+            --bg-secondary: #0a0a0a;
+            --bg-card: #0d0d0d;
+            --bg-hover: #141414;
+            --bg-input: #111111;
+            --border-primary: #1a1a1a;
+            --border-hover: #262626;
+            --border-accent: #333333;
+            --text-primary: #ffffff;
+            --text-secondary: #737373;
+            --text-muted: #525252;
+            --accent: #e5e5e5;
+            --accent-hover: #ffffff;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --info: #3b82f6;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 30px rgba(255, 255, 255, 0.03);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Animated Background */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(255, 255, 255, 0.01) 0%, transparent 50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 24px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Header */
+        .header {
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 16px;
+            padding: 24px 28px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-accent), transparent);
+        }
+        
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .avatar {
+            width: 60px;
+            height: 60px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-hover);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .avatar:hover {
+            border-color: var(--border-accent);
+            transform: scale(1.02);
+        }
+        
+        .user-info h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: -0.02em;
+        }
+        
+        .user-info p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .stats-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-pill {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 10px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-pill:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-hover);
+        }
+        
+        .stat-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .stat-content {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-value {
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 1.2;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            outline: none;
+        }
+        
+        .btn-primary {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+        
+        .btn-danger {
+            background: var(--bg-secondary);
+            color: var(--error);
+            border: 1px solid var(--border-primary);
+        }
+        
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--error);
+        }
+        
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+        
+        .card-title-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+        
+        .card-body {
+            padding: 24px;
+        }
+        
+        /* Bot Type Selector */
+        .type-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .type-option {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-primary);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .type-option:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-hover);
+        }
+        
+        .type-option.active {
+            border-color: var(--text-primary);
+            background: var(--bg-hover);
+        }
+        
+        .type-option.active::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+        }
+        
+        .type-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 20px;
+            color: var(--text-secondary);
+        }
+        
+        .type-option.active .type-icon {
+            border-color: var(--text-primary);
+            color: var(--text-primary);
+        }
+        
+        .type-name {
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        
+        .type-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        
+        .type-price {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            background: var(--bg-card);
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        
+        /* Forms */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 0;
+        }
+        
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-primary);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--border-accent);
+            background: var(--bg-secondary);
+        }
+        
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+        
+        select.form-input {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23737373' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+        
+        /* Toggle Switch */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .toggle {
+            position: relative;
+            width: 52px;
+            height: 28px;
+        }
+        
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-input);
+            border: 1px solid var(--border-primary);
+            border-radius: 28px;
+            transition: 0.3s;
+        }
+        
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background: var(--text-secondary);
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+        
+        .toggle input:checked + .toggle-slider {
+            background: var(--text-primary);
+            border-color: var(--text-primary);
+        }
+        
+        .toggle input:checked + .toggle-slider::before {
+            transform: translateX(24px);
+            background: var(--bg-primary);
+        }
+        
+        .toggle-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .toggle-info p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        /* Warning Box */
+        .warning-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .warning-box i {
+            color: var(--warning);
+            font-size: 16px;
+            margin-top: 2px;
+        }
+        
+        .warning-box p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        /* Submit Button */
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-submit:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+        
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Servers Grid */
+        .servers-container {
+            max-height: 700px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+        
+        .servers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
+        }
+        
+        .server-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .server-card:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-hover);
+        }
+        
+        .server-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        
+        .server-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .server-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+        
+        .server-name {
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
+        
+        .server-type {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .server-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        
+        .status-online {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+        
+        .status-offline {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+        
+        .server-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: var(--bg-card);
+            border-radius: 8px;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .info-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            margin-bottom: 2px;
+        }
+        
+        .info-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .server-expiry {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            background: rgba(245, 158, 11, 0.05);
+            border: 1px solid rgba(245, 158, 11, 0.15);
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 12px;
+            color: var(--warning);
+        }
+        
+        .server-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .btn-action {
+            flex: 1;
+            min-width: 60px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .btn-start {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-start:hover {
+            background: #16a34a;
+        }
+        
+        .btn-stop {
+            background: var(--error);
+            color: white;
+        }
+        
+        .btn-stop:hover {
+            background: #dc2626;
+        }
+        
+        .btn-restart {
+            background: var(--warning);
+            color: var(--bg-primary);
+        }
+        
+        .btn-restart:hover {
+            background: #d97706;
+        }
+        
+        .btn-edit {
+            background: var(--info);
+            color: white;
+        }
+        
+        .btn-edit:hover {
+            background: #2563eb;
+        }
+        
+        .btn-delete {
+            background: var(--bg-card);
+            color: var(--error);
+            border: 1px solid var(--border-primary);
+        }
+        
+        .btn-delete:hover {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--error);
+        }
+        
+        /* Friends Section */
+        .friends-section {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-primary);
+        }
+        
+        .friends-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .friends-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        
+        .friends-count {
+            background: var(--bg-card);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .friends-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 12px;
+        }
+        
+        .friend-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        .friend-item:hover {
+            border-color: var(--border-hover);
+        }
+        
+        .friend-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .friend-id {
+            font-weight: 600;
+            font-size: 13px;
+        }
+        
+        .friend-name {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .btn-remove {
+            width: 28px;
+            height: 28px;
+            background: transparent;
+            border: 1px solid var(--border-primary);
+            border-radius: 6px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-remove:hover {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--error);
+            color: var(--error);
+        }
+        
+        .add-friend-form {
+            display: grid;
+            grid-template-columns: 2fr 1fr auto;
+            gap: 8px;
+        }
+        
+        .add-friend-form .form-input {
+            padding: 10px 12px;
+            font-size: 13px;
+        }
+        
+        .btn-add {
+            padding: 10px 16px;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .btn-add:hover {
+            background: #16a34a;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+        
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+        
+        .empty-state p {
+            font-size: 14px;
+        }
+        
+        /* Owner Panel */
+        .owner-panel {
+            margin-top: 24px;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+        }
+        
+        .tab:hover {
+            color: var(--text-primary);
+        }
+        
+        .tab.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table th {
+            text-align: left;
+            padding: 14px 16px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border-primary);
+            background: var(--bg-secondary);
+        }
+        
+        .data-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-primary);
+            font-size: 14px;
+        }
+        
+        .data-table tr:hover td {
+            background: var(--bg-hover);
+        }
+        
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .role-owner {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+        
+        .role-admin {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--info);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        
+        .role-user {
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-primary);
+        }
+        
+        .action-group {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--border-primary);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-icon:hover {
+            border-color: var(--border-hover);
+            color: var(--text-primary);
+        }
+        
+        .btn-icon.success:hover {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: var(--success);
+            color: var(--success);
+        }
+        
+        .btn-icon.danger:hover {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--error);
+            color: var(--error);
+        }
+        
+        /* Transaction Item */
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .transaction-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .transaction-user {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+        
+        .transaction-details {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .transaction-amount {
+            font-weight: 700;
+            font-size: 14px;
+        }
+        
+        .transaction-amount.add {
+            color: var(--success);
+        }
+        
+        .transaction-amount.deduct {
+            color: var(--error);
+        }
+        
+        .transaction-date {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalIn 0.3s ease;
+        }
+        
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: 1px solid var(--border-primary);
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-close:hover {
+            border-color: var(--error);
+            color: var(--error);
+        }
+        
+        .modal-body {
+            padding: 24px;
+        }
+        
+        .modal-footer {
+            padding: 20px 24px;
+            border-top: 1px solid var(--border-primary);
+            display: flex;
+            gap: 12px;
+        }
+        
+        .modal-footer .btn {
+            flex: 1;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-hover);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-accent);
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--shadow-lg);
+            z-index: 10001;
+            animation: slideIn 0.3s ease;
+            max-width: 400px;
+        }
+        
+        .notification.success {
+            border-color: var(--success);
+        }
+        
+        .notification.error {
+            border-color: var(--error);
+        }
+        
+        .notification-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        
+        .notification.success .notification-icon {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+        }
+        
+        .notification.error .notification-icon {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+        }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification-title {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+        
+        .notification-message {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .user-section {
+                flex-direction: column;
+            }
+            
+            .stats-row {
+                justify-content: center;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            
+            .type-selector {
+                grid-template-columns: 1fr;
+            }
+            
+            .add-friend-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .server-actions {
+                flex-wrap: wrap;
+            }
+            
+            .btn-action {
+                flex: 1 1 calc(50% - 4px);
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                flex: 1;
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+        }
+        
+        /* Hidden Forms */
+        .form-hidden {
+            display: none;
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-gradient"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="user-section">
+                <div class="avatar">
+                    {{ username[0]|upper }}
+                </div>
+                <div class="user-info">
+                    <h1>Welcome, {{ username }}</h1>
+                    <p>Manage your bots and account</p>
+                </div>
+            </div>
+            
+            <div class="stats-row">
+                <div class="stat-pill">
+                    <div class="stat-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value">{{ role_name }}</span>
+                        <span class="stat-label">Role</span>
+                    </div>
+                </div>
+                <div class="stat-pill">
+                    <div class="stat-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value">{{ balance }}</span>
+                        <span class="stat-label">Balance</span>
+                    </div>
+                </div>
+                <div class="stat-pill">
+                    <div class="stat-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value">{{ points }}</span>
+                        <span class="stat-label">Points</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="header-actions">
+                <button class="btn btn-danger" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </header>
+        
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Create Bot Card -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="card-title-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        Create New Bot
+                    </div>
+                    <div class="stat-pill">
+                        <i class="fas fa-star" style="color: var(--warning);"></i>
+                        <span style="font-weight: 700;">{{ points }} Points</span>
+                    </div>
+                </div>
+                
+                <div class="card-body">
+                    <!-- Bot Type Selector -->
+                    <div class="type-selector">
+                        <div class="type-option active" onclick="selectBotType('friend')" id="friendBtn">
+                            <div class="type-icon">
+                                <i class="fas fa-user-friends"></i>
+                            </div>
+                            <div class="type-name">Friend Bot</div>
+                            <div class="type-desc">30 Days - Friend Management</div>
+                            <div class="type-price">{{ bot_prices.friend }} Points</div>
+                        </div>
+                        
+                        <div class="type-option" onclick="selectBotType('clan')" id="clanBtn">
+                            <div class="type-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="type-name">Clan Bot</div>
+                            <div class="type-desc">30 Days - Clan Management</div>
+                            <div class="type-price">{{ bot_prices.clan }} Points</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Friend Bot Form -->
+                    <form id="friendForm" onsubmit="return submitBotForm(event, 'friend')">
+                        <input type="hidden" name="type" value="friend">
+                        
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label class="form-label">Server Name</label>
+                                <input type="text" name="server_name" class="form-input" required placeholder="e.g., My Friend Bot">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Bot Name (In-Game)</label>
+                                <input type="text" name="bot_name" class="form-input" required placeholder="e.g., C4 Friend Bot" value="C4 Friend Bot">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Developer Name</label>
+                                <input type="text" name="developer_name" class="form-input" required placeholder="e.g., C4 Team" value="C4 Team">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Channel (INSTA/TELEGRAM)</label>
+                                <input type="text" name="channel_name" class="form-input" placeholder="e.g., @c4team" value="@c4team">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Welcome Message</label>
+                                <input type="text" name="welcome_msg" class="form-input" placeholder="Welcome my friend!" value="Welcome my friend!">
+                            </div>
+                        </div>
+                        
+                        <div class="warning-box" style="margin-top: 16px;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>Bot will be valid for 30 days only, after which it will be automatically deleted.</p>
+                        </div>
+                        
+                        <button type="submit" class="btn-submit" style="margin-top: 16px;" id="friendSubmitBtn">
+                            <i class="fas fa-magic"></i>
+                            Create Friend Bot ({{ bot_prices.friend }} Points)
+                        </button>
+                    </form>
+                    
+                    <!-- Clan Bot Form -->
+                    <form id="clanForm" class="form-hidden" onsubmit="return submitBotForm(event, 'clan')">
+                        <input type="hidden" name="type" value="clan">
+                        
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label class="form-label">Server Name</label>
+                                <input type="text" name="server_name" class="form-input" required placeholder="e.g., My Clan Bot">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Bot Name (In-Game)</label>
+                                <input type="text" name="bot_name" class="form-input" required placeholder="e.g., C4 Clan Bot" value="C4 Clan Bot">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Owner IDs</label>
+                                <input type="text" name="owner_ids" class="form-input" placeholder="123456789,987654321">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Clan Tag</label>
+                                <input type="text" name="clan_tag" class="form-input" required placeholder="e.g., C4TAG" value="C4TAG">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Clan ID</label>
+                                <input type="text" name="clan_id" class="form-input" required placeholder="Enter clan ID">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Welcome Message</label>
+                                <input type="text" name="welcome_msg" class="form-input" placeholder="Welcome to the clan!" value="Welcome to the clan!">
+                            </div>
+                        </div>
+                        
+                        <!-- Only Tag Toggle -->
+                        <div class="toggle-container" style="margin-top: 16px;">
+                            <label class="toggle">
+                                <input type="checkbox" name="only_tag" id="onlyTagSwitch" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div class="toggle-info">
+                                <h4>Only Tag Mode</h4>
+                                <p>When enabled: uses TcP_GuiLd.py | When disabled: uses TcP_GuiLd-TaG.py</p>
+                            </div>
+                        </div>
+                        
+                        <div class="warning-box">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>Bot will be valid for 30 days only, after which it will be automatically deleted.</p>
+                        </div>
+                        
+                        <button type="submit" class="btn-submit" id="clanSubmitBtn">
+                            <i class="fas fa-magic"></i>
+                            Create Clan Bot ({{ bot_prices.clan }} Points)
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- My Bots Card -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="card-title-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        My Bots
+                    </div>
+                    <div class="stat-pill">
+                        <span style="font-weight: 700;">{{ servers|length }} Active</span>
+                    </div>
+                </div>
+                
+                <div class="card-body" style="padding: 16px;">
+                    <div class="servers-container">
+                        <div class="servers-grid" id="serversList">
+                            {% for server in servers %}
+                            <div class="server-card" data-id="{{ server.server_id }}" data-type="{{ server.type }}">
+                                <div class="server-header">
+                                    <div class="server-title">
+                                        <div class="server-icon">
+                                            {% if server.type == 'friend' %}
+                                            <i class="fas fa-user-friends"></i>
+                                            {% else %}
+                                            <i class="fas fa-users"></i>
+                                            {% endif %}
+                                        </div>
+                                        <div>
+                                            <div class="server-name">{{ server.server_name }}</div>
+                                            <div class="server-type">{% if server.type == 'friend' %}Friend Bot{% else %}Clan Bot{% endif %}</div>
+                                        </div>
+                                    </div>
+                                    <div class="server-status {{ 'status-online' if server.status == 'Online' else 'status-offline' }}">
+                                        {{ server.status }}
+                                    </div>
+                                </div>
+                                
+                                <div class="server-info">
+                                    <div class="info-item">
+                                        <span class="info-label">Bot Name</span>
+                                        <span class="info-value">{{ server.bot_name }}</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Created</span>
+                                        <span class="info-value">{{ server.created_at[:10] }}</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Points</span>
+                                        <span class="info-value">{{ server.points_spent or 0 }} <i class="fas fa-star" style="font-size: 10px;"></i></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Type</span>
+                                        <span class="info-value">{{ server.type|title }}</span>
+                                    </div>
+                                </div>
+                                
+                                {% if server.expires_at %}
+                                <div class="server-expiry">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Expires: {{ server.expires_at[:10] }}</span>
+                                </div>
+                                {% endif %}
+                                
+                                <div class="server-actions">
+                                    {% if server.status == 'Online' %}
+                                    <button class="btn-action btn-stop" onclick="manageServer('{{ server.server_id }}', 'stop')">
+                                        <i class="fas fa-stop"></i> Stop
+                                    </button>
+                                    <button class="btn-action btn-restart" onclick="manageServer('{{ server.server_id }}', 'restart')">
+                                        <i class="fas fa-redo"></i> Restart
+                                    </button>
+                                    {% else %}
+                                    <button class="btn-action btn-start" onclick="manageServer('{{ server.server_id }}', 'start')">
+                                        <i class="fas fa-play"></i> Start
+                                    </button>
+                                    {% endif %}
+                                    <button class="btn-action btn-edit" onclick="openEditModal('{{ server.server_id }}', '{{ server.type }}')">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
+                                    <button class="btn-action btn-delete" onclick="deleteServer('{{ server.server_id }}')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                                
+                                {% if server.type == 'friend' %}
+                                <div class="friends-section">
+                                    <div class="friends-header">
+                                        <span class="friends-title">
+                                            <i class="fas fa-user-friends"></i> Friends
+                                        </span>
+                                        <span class="friends-count">{{ server.friends|length }}</span>
+                                    </div>
+                                    
+                                    <div class="friends-list" id="friendsList-{{ server.server_id }}">
+                                        {% if server.friends %}
+                                            {% for friend in server.friends %}
+                                            <div class="friend-item">
+                                                <div class="friend-info">
+                                                    <span class="friend-id">{{ friend.id }}</span>
+                                                    <span class="friend-name">{{ friend.name }}</span>
+                                                </div>
+                                                <button class="btn-remove" onclick="removeFriend('{{ server.server_id }}', '{{ friend.id }}')">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            <div class="empty-state" style="padding: 20px;">
+                                                <p style="font-size: 13px;">No friends added yet</p>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="add-friend-form">
+                                        <input type="text" id="friendUid-{{ server.server_id }}" class="form-input" placeholder="Enter ID">
+                                        <input type="number" id="friendDays-{{ server.server_id }}" class="form-input" placeholder="Days" value="30" min="1">
+                                        <button type="button" class="btn-add" onclick="addFriend('{{ server.server_id }}')">
+                                            <i class="fas fa-plus"></i> Add
+                                        </button>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% else %}
+                            <div class="empty-state" style="grid-column: 1 / -1;">
+                                <i class="fas fa-robot"></i>
+                                <p>No bots yet. Create your first bot!</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Owner Panel -->
+        {% if role == 'owner' or role == 'admin' %}
+        <div class="card owner-panel">
+            <div class="card-header">
+                <div class="card-title">
+                    <div class="card-title-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    Owner Panel
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <div class="tabs">
+                    <button class="tab active" onclick="openPanelTab('users')">
+                        <i class="fas fa-users"></i> Users
+                    </button>
+                    <button class="tab" onclick="openPanelTab('transactions')">
+                        <i class="fas fa-history"></i> Transactions
+                    </button>
+                    <button class="tab" onclick="openPanelTab('addPoints')">
+                        <i class="fas fa-plus-circle"></i> Add Points
+                    </button>
+                </div>
+                
+                <!-- Users Tab -->
+                <div class="tab-content active" id="usersPanel">
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Role</th>
+                                    <th>Points</th>
+                                    <th>Bots</th>
+                                    <th>Last Login</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Transactions Tab -->
+                <div class="tab-content" id="transactionsPanel">
+                    <div id="transactionsList">
+                    </div>
+                </div>
+                
+                <!-- Add Points Tab -->
+                <div class="tab-content" id="addPointsPanel">
+                    <form id="addPointsForm" class="form-grid" style="max-width: 600px;">
+                        <div class="form-group">
+                            <label class="form-label">Username</label>
+                            <input type="text" id="targetUser" class="form-input" placeholder="Enter username" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Amount</label>
+                            <input type="number" id="pointsAmount" class="form-input" placeholder="Number of points" min="1" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Action Type</label>
+                            <select id="pointsAction" class="form-input" required>
+                                <option value="add">Add Points</option>
+                                <option value="deduct">Deduct Points</option>
+                            </select>
+                        </div>
+                        
+        <div class="form-group">
+                            <label class="form-label">Reason</label>
+                            <input type="text" id="pointsReason" class="form-input" placeholder="Reason for this action" required>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <button type="submit" class="btn-submit">
+                                <i class="fas fa-coins"></i> Execute Transaction
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fas fa-edit"></i> Edit Bot
+                </div>
+                <button class="btn-close" onclick="closeEditModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body" id="editFormContainer">
+                <!-- Filled by JavaScript -->
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-danger" onclick="closeEditModal()">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button class="btn btn-primary" onclick="saveBotChanges()">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Select Bot Type
+        function selectBotType(type) {
+            const friendBtn = document.getElementById('friendBtn');
+            const clanBtn = document.getElementById('clanBtn');
+            const friendForm = document.getElementById('friendForm');
+            const clanForm = document.getElementById('clanForm');
+            
+            if (type === 'friend') {
+                friendBtn.classList.add('active');
+                clanBtn.classList.remove('active');
+                friendForm.classList.remove('form-hidden');
+                clanForm.classList.add('form-hidden');
+            } else {
+                friendBtn.classList.remove('active');
+                clanBtn.classList.add('active');
+                friendForm.classList.add('form-hidden');
+                clanForm.classList.remove('form-hidden');
+            }
+        }
+        
+        // Submit Bot Form
+        async function submitBotForm(event, botType) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            const requestData = {
+                type: botType,
+                server_name: formData.get('server_name'),
+                bot_name: formData.get('bot_name'),
+                welcome_msg: formData.get('welcome_msg')
+            };
+            
+            if (botType === 'friend') {
+                requestData.developer_name = formData.get('developer_name');
+                requestData.channel_name = formData.get('channel_name');
+            } else {
+                requestData.owner_ids = formData.get('owner_ids');
+                requestData.clan_tag = formData.get('clan_tag');
+                requestData.clan_id = formData.get('clan_id');
+                
+                const onlyTagSwitch = document.getElementById('onlyTagSwitch');
+                requestData.only_tag = onlyTagSwitch ? onlyTagSwitch.checked : true;
+            }
+            
+            // Validation
+            if (!requestData.server_name || !requestData.bot_name) {
+                showNotification('Please fill in all required fields', 'error');
+                return false;
+            }
+            
+            if (botType === 'friend' && !requestData.developer_name) {
+                showNotification('Please enter developer name', 'error');
+                return false;
+            }
+            
+            if (botType === 'clan' && (!requestData.clan_tag || !requestData.clan_id)) {
+                showNotification('Please enter clan tag and ID', 'error');
+                return false;
+            }
+            
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner spinner"></i> Creating... (10-20s)';
+            submitBtn.disabled = true;
+            
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 50000);
+            
+            try {
+                const response = await fetch('/create-server', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestData),
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification(result.message, 'success');
+                    setTimeout(() => location.reload(), 2000);
+                } else {
+                    showNotification(result.message, 'error');
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            } catch (error) {
+                clearTimeout(timeoutId);
+                
+                if (error.name === 'AbortError') {
+                    showNotification('Request timeout', 'error');
+                } else {
+                    showNotification('Connection error: ' + error.message, 'error');
+                }
+                
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+            
+            return false;
+        }
+        
+        // Manage Server
+        async function manageServer(serverId, action) {
+            const actionText = { 'start': 'start', 'stop': 'stop', 'restart': 'restart' }[action];
+            
+            if (!confirm(`Are you sure you want to ${actionText} this server?`)) {
+                return;
+            }
+            
+            try {
+                const response = await fetch('/manage-server', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ server_id: serverId, action: action })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification(result.message, 'success');
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showNotification(result.message, 'error');
+                }
+            } catch (error) {
+                showNotification('Connection error', 'error');
+            }
+        }
+        
+        // Delete Server
+        async function deleteServer(serverId) {
+            if (!confirm('Are you sure you want to delete this server? This action cannot be undone and all files will be deleted!')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch('/delete-server', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ server_id: serverId })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification(result.message, 'success');
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showNotification(result.message, 'error');
+                }
+            } catch (error) {
+                showNotification('Connection error', 'error');
+            }
+        }
+        
+        // Add Friend
+        async function addFriend(serverId) {
+            const uidInput = document.getElementById(`friendUid-${serverId}`);
+            const daysInput = document.getElementById(`friendDays-${serverId}`);
+            
+            const uid = uidInput.value.trim();
+            const days = daysInput.value;
+            
+            if (!uid) {
+                showNotification('Please enter ID', 'error');
+                uidInput.focus();
+                return;
+            }
+            
+            if (!days || days < 1) {
+                showNotification('Please enter valid days', 'error');
+                daysInput.focus();
+                return;
+            }
+            
+            const btn = uidInput.parentElement.querySelector('.btn-add');
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner spinner"></i>';
+            btn.disabled = true;
+            
+            try {
+                const response = await fetch('/manage-friend', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        server_id: serverId,
+                        action: 'add',
+                        uid: uid,
+                        days: parseInt(days)
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification('Friend added successfully', 'success');
+                    uidInput.value = '';
+                    daysInput.value = '30';
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showNotification(result.message, 'error');
+                }
+            } catch (error) {
+                showNotification('Connection error', 'error');
+            } finally {
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+            }
+        }
+        
+        // Remove Friend
+        async function removeFriend(serverId, friendId) {
+            if (!confirm('Are you sure you want to remove this friend?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch('/manage-friend', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        server_id: serverId,
+                        action: 'remove',
+                        uid: friendId
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification('Friend removed successfully', 'success');
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showNotification(result.message, 'error');
+                }
+            } catch (error) {
+                showNotification('Connection error', 'error');
+            }
+        }
+        
+        // Edit Modal
+        let currentEditServerId = null;
+        let currentEditType = null;
+        
+        function openEditModal(serverId, type) {
+            currentEditServerId = serverId;
+            currentEditType = type;
+            
+            fetch(`/api/bot-info/${serverId}`)
+                .then(res => res.json())
+                .then(result => {
+                    if (result.success) {
+                        const container = document.getElementById('editFormContainer');
+                        const data = result.data;
+                        
+                        if (type === 'friend') {
+                            container.innerHTML = `
+                                <div class="form-group" style="margin-bottom: 16px;">
+                                    <label class="form-label">Developer Name</label>
+                                    <input type="text" id="edit_dev_name" class="form-input" value="${data.developer_name || ''}">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 16px;">
+                                    <label class="form-label">Channel (INSTA/TELEGRAM)</label>
+                                    <input type="text" id="edit_channel" class="form-input" value="${data.channel_name || ''}">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Welcome Message</label>
+                                    <input type="text" id="edit_welcome" class="form-input" value="${data.welcome_msg || ''}">
+                                </div>
+                            `;
+                        } else {
+                            container.innerHTML = `
+                                <div class="form-group" style="margin-bottom: 16px;">
+                                    <label class="form-label">Owner IDs</label>
+                                    <input type="text" id="edit_owners" class="form-input" value="${data.owner_ids || ''}">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 16px;">
+                                    <label class="form-label">Clan Tag</label>
+                                    <input type="text" id="edit_tag" class="form-input" value="${data.clan_tag || ''}">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Welcome Message</label>
+                                    <input type="text" id="edit_welcome" class="form-input" value="${data.welcome_msg || ''}">
+                                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">
+                                        <i class="fas fa-info-circle"></i> 
+                                        {owner} will be replaced with clan owner's name automatically
+                                    </p>
+                                </div>
+                            `;
+                        }
+                        
+                        document.getElementById('editModal').classList.add('active');
+                    } else {
+                        showNotification(result.message, 'error');
+                    }
+                })
+                .catch(() => {
+                    showNotification('Error fetching bot data', 'error');
+                });
+        }
+        
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+            currentEditServerId = null;
+            currentEditType = null;
+        }
+        
+        function saveBotChanges() {
+            if (!currentEditServerId) return;
+            
+            let updateData = {};
+            
+            if (currentEditType === 'friend') {
+                updateData = {
+                    developer_name: document.getElementById('edit_dev_name').value,
+                    channel_name: document.getElementById('edit_channel').value,
+                    welcome_msg: document.getElementById('edit_welcome').value
+                };
+            } else {
+                updateData = {
+                    owner_ids: document.getElementById('edit_owners').value,
+                    clan_tag: document.getElementById('edit_tag').value,
+                    welcome_msg: document.getElementById('edit_welcome').value
+                };
+            }
+            
+            fetch(`/api/update-bot/${currentEditServerId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updateData)
+            })
+            .then(res => res.json())
+            .then(result => {
+                if (result.success) {
+                    showNotification('Updated successfully', 'success');
+                    closeEditModal();
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showNotification(result.message, 'error');
+                }
+            })
+            .catch(() => {
+                showNotification('Error saving changes', 'error');
+            });
+        }
+        
+        // Close modal on outside click
+        document.getElementById('editModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeEditModal();
+            }
+        });
+        
+        // Panel Tabs
+        function openPanelTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            document.querySelector(`.tab[onclick*="${tabName}"]`).classList.add('active');
+            document.getElementById(`${tabName}Panel`).classList.add('active');
+            
+            if (tabName === 'users') {
+                loadUsers();
+            } else if (tabName === 'transactions') {
+                loadTransactions();
+            }
+        }
+        
+        // Load Users
+        async function loadUsers() {
+            try {
+                const response = await fetch('/owner/users');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const tbody = document.getElementById('usersTableBody');
+                    tbody.innerHTML = '';
+                    
+                    result.users.forEach(user => {
+                        const roleClass = user.role === 'owner' ? 'role-owner' : user.role === 'admin' ? 'role-admin' : 'role-user';
+                        const roleIcon = user.role === 'owner' ? 'fa-crown' : user.role === 'admin' ? 'fa-shield-alt' : 'fa-user';
+                        
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td><strong>${user.username}</strong></td>
+                            <td>
+                                <span class="role-badge ${roleClass}">
+                                    <i class="fas ${roleIcon}"></i> ${user.role}
+                                </span>
+                            </td>
+                            <td><span style="font-weight: 700;">${user.points} <i class="fas fa-star" style="font-size: 10px; color: var(--warning);"></i></span></td>
+                            <td>${user.servers_count}</td>
+                            <td style="color: var(--text-secondary);">${user.last_login || '--'}</td>
+                            <td>
+                                <div class="action-group">
+                                    <button class="btn-icon success" onclick="addPointsToUser('${user.username}')" title="Add Points">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="btn-icon danger" onclick="deductPointsFromUser('${user.username}')" title="Deduct Points">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+        
+        // Load Transactions
+        async function loadTransactions() {
+            try {
+                const response = await fetch('/owner/transactions');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const container = document.getElementById('transactionsList');
+                    container.innerHTML = '';
+                    
+                    if (result.transactions.length === 0) {
+                        container.innerHTML = `
+                            <div class="empty-state">
+                                <i class="fas fa-history"></i>
+                                <p>No transactions yet</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    result.transactions.forEach(transaction => {
+                        const amountClass = transaction.action === 'add' ? 'add' : 'deduct';
+                        const amountSign = transaction.action === 'add' ? '+' : '-';
+                        
+                        const item = document.createElement('div');
+                        item.className = 'transaction-item';
+                        item.innerHTML = `
+                            <div class="transaction-info">
+                                <span class="transaction-user">${transaction.username}</span>
+                                <span class="transaction-details">
+                                    ${transaction.reason || 'No reason provided'}
+                                </span>
+                                <span class="transaction-date">${transaction.timestamp}</span>
+                            </div>
+                            <div class="transaction-amount ${amountClass}">
+                                ${amountSign}${transaction.amount} <i class="fas fa-star" style="font-size: 10px;"></i>
+                            </div>
+                        `;
+                        container.appendChild(item);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading transactions:', error);
+            }
+        }
+        
+        // Add Points Form
+        document.getElementById('addPointsForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const targetUser = document.getElementById('targetUser').value;
+            const amount = parseInt(document.getElementById('pointsAmount').value);
+            const action = document.getElementById('pointsAction').value;
+            const reason = document.getElementById('pointsReason').value;
+            
+            if (!targetUser || !amount || amount <= 0) {
+                showNotification('Please fill in all fields correctly', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/owner/manage-points', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: targetUser,
+                        action: action,
+                        amount: amount,
+                        reason: reason
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification(result.message, 'success');
+                    document.getElementById('addPointsForm').reset();
+                    loadUsers();
+                } else {
+                    showNotification(result.message, 'error');
+                }
+            } catch (error) {
+                showNotification('Connection error', 'error');
+            }
+        });
+        
+        function addPointsToUser(username) {
+            document.getElementById('targetUser').value = username;
+            document.getElementById('pointsAction').value = 'add';
+            document.getElementById('pointsAmount').focus();
+            openPanelTab('addPoints');
+        }
+        
+        function deductPointsFromUser(username) {
+            document.getElementById('targetUser').value = username;
+            document.getElementById('pointsAction').value = 'deduct';
+            document.getElementById('pointsAmount').focus();
+            openPanelTab('addPoints');
+        }
+        
+        // Notification
+        function showNotification(message, type) {
+            const existing = document.querySelector('.notification');
+            if (existing) existing.remove();
+            
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            const title = type === 'success' ? 'Success' : 'Error';
+            
+            notification.innerHTML = `
+                <div class="notification-icon">
+                    <i class="fas ${icon}"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">${title}</div>
+                    <div class="notification-message">${message}</div>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 5000);
+        }
+        
+        // Logout
+        function logout() {
+            if (confirm('Do you want to logout?')) {
+                window.location.href = '/logout';
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            {% if role == 'owner' or role == 'admin' %}
+            loadUsers();
+            {% endif %}
+        });
+    </script>
+</body>
+</html>
