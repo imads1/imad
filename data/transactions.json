@@ -1,0 +1,79 @@
+[
+    {
+        "username": "owner1",
+        "action": "deduct",
+        "amount": 10,
+        "reason": "إنشاء بوت friend",
+        "timestamp": "2026-03-17 08:33:17"
+    },
+    {
+        "username": "owner1",
+        "action": "add",
+        "amount": 10,
+        "reason": "استرجاع نقاط - فشل توليد الحساب",
+        "timestamp": "2026-03-17 08:33:30"
+    },
+    {
+        "username": "owner1",
+        "action": "deduct",
+        "amount": 10,
+        "reason": "إنشاء بوت friend",
+        "timestamp": "2026-03-17 08:33:38"
+    },
+    {
+        "username": "owner1",
+        "action": "add",
+        "amount": 10,
+        "reason": "استرجاع نقاط - فشل توليد الحساب",
+        "timestamp": "2026-03-17 08:33:49"
+    },
+    {
+        "username": "owner1",
+        "action": "deduct",
+        "amount": 10,
+        "reason": "إنشاء بوت friend",
+        "timestamp": "2026-03-17 08:34:01"
+    },
+    {
+        "username": "smoki",
+        "action": "deduct",
+        "amount": 10,
+        "reason": "إنشاء بوت friend",
+        "timestamp": "2026-03-17 09:05:18"
+    },
+    {
+        "username": "smoki",
+        "action": "add",
+        "amount": 10,
+        "reason": "استرجاع نقاط - فشل توليد الحساب",
+        "timestamp": "2026-03-17 09:05:29"
+    },
+    {
+        "username": "smoki",
+        "action": "deduct",
+        "amount": 10,
+        "reason": "إنشاء بوت friend",
+        "timestamp": "2026-03-17 09:06:07"
+    },
+    {
+        "username": "smoki",
+        "action": "deduct",
+        "amount": 10,
+        "reason": "إنشاء بوت clan",
+        "timestamp": "2026-03-17 13:25:16"
+    },
+    {
+        "username": "smoki",
+        "action": "add",
+        "amount": 10,
+        "reason": "استرجاع نقاط - فشل توليد الحساب",
+        "timestamp": "2026-03-17 13:25:28"
+    },
+    {
+        "username": "smoki",
+        "action": "deduct",
+        "amount": 10,
+        "reason": "إنشاء بوت clan",
+        "timestamp": "2026-03-17 13:25:33"
+    }
+]
