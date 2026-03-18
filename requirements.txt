@@ -1,0 +1,13 @@
+Flask
+requests
+telebot
+psutil
+PyJWT
+urllib3
+google
+pycryptodome
+protobuf
+protobuf-decoder
+asyncio
+aiohttp
+aiofiles

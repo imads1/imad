@@ -1,0 +1,48 @@
+2026-02-25 18:25:28,975 - __main__ - INFO - 🔄 Starting bots status monitor...
+2026-02-25 18:25:28,983 - __main__ - INFO - ==================================================
+2026-02-25 18:25:28,983 - __main__ - INFO - 🚀 C4 Panel Started Successfully!
+2026-02-25 18:25:28,983 - __main__ - INFO - 📁 Data directory: /root/S5/data
+2026-02-25 18:25:28,983 - __main__ - INFO - 📁 User servers directory: /root/S5/user_servers
+2026-02-25 18:25:28,983 - __main__ - INFO - 💰 Bot prices: {'friend': 10, 'clan': 10}
+2026-02-25 18:25:28,983 - __main__ - INFO - ==================================================
+2026-02-25 18:25:28,983 - __main__ - INFO - 🔄 Restarting all servers with fresh files...
+2026-02-25 18:25:28,983 - __main__ - INFO - ✅ Server restart process completed
+ * Serving Flask app 'OFC'
+ * Debug mode: on
+2026-02-25 18:25:28,996 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:22143
+ * Running on http://54.37.224.92:22143
+2026-02-25 18:25:28,996 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2026-02-25 18:25:28,996 - werkzeug - INFO -  * Restarting with stat
+2026-02-25 18:25:29,233 - __main__ - INFO - 🔄 Starting bots status monitor...
+2026-02-25 18:25:29,240 - __main__ - INFO - ==================================================
+2026-02-25 18:25:29,240 - __main__ - INFO - 🚀 C4 Panel Started Successfully!
+2026-02-25 18:25:29,240 - __main__ - INFO - 📁 Data directory: /root/S5/data
+2026-02-25 18:25:29,240 - __main__ - INFO - 📁 User servers directory: /root/S5/user_servers
+2026-02-25 18:25:29,240 - __main__ - INFO - 💰 Bot prices: {'friend': 10, 'clan': 10}
+2026-02-25 18:25:29,240 - __main__ - INFO - ==================================================
+2026-02-25 18:25:29,240 - __main__ - INFO - 🔄 Restarting all servers with fresh files...
+2026-02-25 18:25:29,240 - __main__ - INFO - ✅ Server restart process completed
+2026-02-25 18:25:29,248 - werkzeug - WARNING -  * Debugger is active!
+2026-02-25 18:25:29,248 - werkzeug - INFO -  * Debugger PIN: 134-923-166
+2026-02-25 18:26:02,857 - werkzeug - INFO - 102.172.17.134 - - [25/Feb/2026 18:26:02] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-25 18:26:06,738 - werkzeug - INFO - 102.172.17.134 - - [25/Feb/2026 18:26:06] "[32mPOST /login HTTP/1.1[0m" 302 -
+2026-02-25 18:26:06,891 - werkzeug - INFO - 102.172.17.134 - - [25/Feb/2026 18:26:06] "GET /user-dashboard HTTP/1.1" 200 -
+2026-02-25 18:26:07,289 - werkzeug - INFO - 102.172.17.134 - - [25/Feb/2026 18:26:07] "[31m[1mGET /owner/users HTTP/1.1[0m" 403 -
+2026-02-25 18:26:25,799 - __main__ - INFO - ✅ Server environment created: /root/S5/user_servers/admin/3bdili
+2026-02-25 18:26:25,799 - __main__ - INFO - 📝 Generating account '3bdili' from local pool
+2026-02-25 18:26:28,964 - __main__ - INFO - Setting up FRIEND bot with account: 4563226678
+2026-02-25 18:26:30,973 - __main__ - INFO - ✅ Friend bot setup completed
+2026-02-25 18:26:30,975 - werkzeug - INFO - 102.172.17.134 - - [25/Feb/2026 18:26:30] "POST /create-server HTTP/1.1" 200 -
+2026-02-25 18:26:36,183 - werkzeug - INFO - 102.172.17.134 - - [25/Feb/2026 18:26:36] "GET /user-dashboard HTTP/1.1" 200 -
+2026-02-25 18:26:36,469 - werkzeug - INFO - 102.172.17.134 - - [25/Feb/2026 18:26:36] "[31m[1mGET /owner/users HTTP/1.1[0m" 403 -
+2026-02-25 18:27:03,600 - __main__ - INFO - Stopping server 1...
+2026-02-25 18:27:04,126 - werkzeug - INFO - 102.172.17.134 - - [25/Feb/2026 18:27:04] "POST /manage-server HTTP/1.1" 200 -
+2026-02-25 18:27:08,923 - werkzeug - INFO - 102.172.17.134 - - [25/Feb/2026 18:27:08] "GET /user-dashboard HTTP/1.1" 200 -
+2026-02-25 18:27:09,256 - werkzeug - INFO - 102.172.17.134 - - [25/Feb/2026 18:27:09] "[31m[1mGET /owner/users HTTP/1.1[0m" 403 -
+2026-02-25 18:30:09,925 - werkzeug - INFO - 154.249.193.66 - - [25/Feb/2026 18:30:09] "GET / HTTP/1.1" 200 -
+2026-02-25 18:30:11,183 - werkzeug - INFO - 154.249.193.66 - - [25/Feb/2026 18:30:11] "GET / HTTP/1.1" 200 -
+2026-02-25 18:30:11,695 - werkzeug - INFO - 154.249.193.66 - - [25/Feb/2026 18:30:11] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-25 18:30:15,275 - werkzeug - INFO - 154.249.193.66 - - [25/Feb/2026 18:30:15] "POST /login HTTP/1.1" 200 -
+2026-02-25 18:31:37,771 - werkzeug - INFO - 154.249.193.66 - - [25/Feb/2026 18:31:37] "POST /login HTTP/1.1" 200 -
