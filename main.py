@@ -1787,4 +1787,4 @@ if __name__ == '__main__':
     
     restart_all_servers()
     
-    app.run(host='0.0.0.0', port=15540, debug=True, threaded=True)
+    app.run(host='0.0.0.0', port=5000, debug=True, threaded=True)
